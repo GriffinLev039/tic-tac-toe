@@ -1,0 +1,43 @@
+#body {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
+#funnylilgrid {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+.tile {
+    height: 100px;
+    width: 100px;
+    background-color: wheat;
+    border: 10px inset black;
+    gap: 1px;
+}
+
+#scoreContainer {
+    display: flex;
+    gap: 15px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.tile:hover {
+    background-color: blanchedalmond;
+}
+.tile:active {
+    background-color: bisque;
+}
+p {
+    white-space: pre-wrap;
+}
+
+dialog[open] {
+    border: 1px solid black;
+    border-radius: 15px;
+    width: 500px;
+    height: 250px;
+}
