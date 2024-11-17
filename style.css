@@ -1,15 +1,42 @@
 #body {
+
+    display: grid;
+    grid-template: 1fr/ 1.25fr 2fr 1.25fr;
+    width: 60%;
+    height: 75%;
+    border: 1px solid black;
+}
+
+#left, #right {
     display: flex;
     flex-flow: column;
     align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
+    text-align: center;
 }
+input {
+    width: 75%;
+    font-weight: bolder;
+    font-size: 32px;
+    border: 2px solid white;
+    text-align: center;
+    border-radius: 15px;
+}
+input:hover {
+    border: 2px solid lightblue;
+}
+
 #funnylilgrid {
     display: grid;
-    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    grid-template: repeat(3, 100px) / repeat(3, 100px);
 }
+#main {
+    height: auto;
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    align-items: center;
+}
+
 .tile {
     height: 100px;
     width: 100px;

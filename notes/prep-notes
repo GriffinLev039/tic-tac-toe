@@ -1,0 +1,42 @@
+Objects: 
+ - User
+   > Instance variables of name, input (e.g. x, o), score
+ - Board?
+
+Modules:
+ - Game logic?
+   > Board is a private variable
+   > detects win via private function
+   > Only callable functions are setPos, resetGame probably?
+   > MAYBE have a getter for gameBoard
+ - Display
+   > One public function, displayGame()
+   > Takes argument of game, which refers to IIFE for gameboard
+
+Idea is:
+ > Central gameboard object
+ > Game logic IIFE
+ > Display IIFE
+ > Objects to represent users
+
+ If i just want a gameboard, with a function to set stuff, a function to reset the board, and a function to read the board, I just want an IIFE. 
+
+How displayLogic will work:
+
+
+
+idea for how program could run:
+	Game logic intialized
+	Creates gameboard
+	passes gameboard to display
+	creates two users
+	runs game
+
+idea for how program could run:
+	intialize gameboard IIFE
+	display logic gets gameboard, displays it
+	on every move, coordinates are passed from gameboard to displayLogic, updates display
+
+displayController
+
+gameController

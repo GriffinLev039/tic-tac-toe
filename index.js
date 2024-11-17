@@ -1,13 +1,11 @@
-// const tempInputX = document.getElementById("tempInputX");
-// const tempInputY = document.getElementById("tempInputY");
-const body = document.getElementById("body");
 const container = document.getElementById("funnylilgrid");
 const p1Score = document.getElementById("p1Score");
 const p2Score = document.getElementById("p2Score");
 const p1Name = document.getElementById("p1Name");
 const p2Name = document.getElementById("p2Name");
-
-
+//To-Do:
+//Clean up the below javascript (Basically anything not modular)
+//Add win dialogs
 const header = document.createElement("h1");
 header.textContent = "Change your name:";
 const input = document.createElement("input");
@@ -48,6 +46,9 @@ p2Name.addEventListener('click',()=>{
     dialog2.showModal();
 });
 
+document.getElementById("resetBtn").addEventListener('click',()=>{gameController.resetGame()});
+
+
 //game object should handle game logic
 //should have function to handle display management as well probably? Could be too much for one
 //module tho
@@ -57,7 +58,6 @@ const game = (function () {
     function setPos(x, y, value) {
         if (gameBoard[x][y] === 0) {
             gameBoard[x][y] = value;
-            displayController.display();
             return detectWin();
         } else {
             return false;
@@ -92,7 +92,6 @@ const game = (function () {
         if (detectDraw()) {
             return -1;
         }
-        console.log(`returnVal: ${returnVal}`);
         return returnVal;
     }
 
@@ -115,49 +114,15 @@ const game = (function () {
             }
         }
         gameController.setTurn(2);
-        displayController.display();
         DOMController.resetPointers();
     }
 
-    function getBoard() {
-        return gameBoard.map(row => [...row]);
-    }
-
-    return {setPos, getBoard};
+    return {setPos, resetGame};
 })();
 
 
-const displayController = (function () {
 
-    function parseBoard(gameBoard) {
-        for (let i = 0; i < gameBoard.length; i++) {
-            for (let j = 0; j < gameBoard.length; j++) {
-                if (gameBoard[i][j] === 0) {
-                    gameBoard[i][j] = " ";
-                } else if (gameBoard[i][j] === 1) {
-                    gameBoard[i][j] = "X";
-                } else {
-                    gameBoard[i][j] = "O";
-                }
-            }
-        }
-        return gameBoard;
-    }
-
-    function display() {
-        const thisBoard = parseBoard(game.getBoard());
-        console.log("Tic-Tac-Toe!");
-        console.log(`${thisBoard[0][0]} | ${thisBoard[0][1]} | ${thisBoard[0][2]}\n
------------\n
-${thisBoard[1][0]} | ${thisBoard[1][1]} | ${thisBoard[1][2]}\n
------------\n
-${thisBoard[2][0]} | ${thisBoard[2][1]} | ${thisBoard[2][2]}`);
-    }
-
-    return {display};
-})();
-
-function newPlayer(name, playerType) {
+function newPlayer(playerType) {
     let score = 0;
     let input = playerType;
 
@@ -171,8 +136,6 @@ function newPlayer(name, playerType) {
     }
 
     function addWin() {
-        console.log(`player${input} wins!`);
-
         score++;
         if (input === 1) {
             p1Score.textContent=score.toString();
@@ -181,22 +144,23 @@ function newPlayer(name, playerType) {
 
         }
     }
+    function resetScore() {
+        score = 0;
+    }
 
-    return {makeMove};
+    return {makeMove, resetScore};
 }
 
 const gameController = (function () {
     let currentTurn = 2;
-    const player1 = newPlayer("Jack", 1);
-    const player2 = newPlayer("Jill", 2);
-    displayController.display();
+    const player1 = newPlayer(1);
+    const player2 = newPlayer(2);
 
     function mainLogic(sentY, sentX) {
         let player = player2;
         if (currentTurn === 1) {
             player = player1;
         }
-        console.log(`Player${currentTurn}'s turn!`);
         let isValid = player.makeMove(sentY, sentX);
         if (isValid === false) {
             currentTurn = currentTurn === 1 ? 2 : 1;
@@ -212,8 +176,16 @@ const gameController = (function () {
     function getTurn() {
         return currentTurn;
     }
+    function resetGame() {
+        p1Name.textContent = "Player 1";
+        p2Name.textContent = "Player 2";
+        DOMController.resetPointers();
+        game.resetGame();
+        player1.resetScore();
+        player2.resetScore();
+    }
 
-    return {mainLogic, setTurn, getTurn};
+    return {mainLogic, setTurn, getTurn, resetGame};
 }());
 
 const DOMController = (function () {
@@ -240,9 +212,5 @@ const DOMController = (function () {
             child.textContent = "";
         }
     }
-
     return {resetPointers};
 })();
-
-console.log("Good luck :(");
-
